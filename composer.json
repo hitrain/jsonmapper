@@ -1,5 +1,5 @@
 {
-    "name": "netresearch/jsonmapper",
+    "name": "hitrain/jsonmapper",
     "description": "Map nested JSON structures onto PHP classes",
     "license": "OSL-3.0",
     "autoload": {
