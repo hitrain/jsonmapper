@@ -7,15 +7,15 @@
     },
     "authors": [
         {
-            "name": "Christian Weiske",
-            "email": "cweiske@cweiske.de",
-            "homepage": "http://github.com/cweiske/jsonmapper/",
+            "name": "hitrain",
+            "email": "hitrain777@gmail.com",
+            "homepage": "https://github.com/hitrain/jsonmapper",
             "role": "Developer"
         }
     ],
     "support": {
-        "email": "cweiske@cweiske.de",
-        "issues": "https://github.com/cweiske/jsonmapper/issues"
+        "email": "hitrain777@gmail.com",
+        "issues": "https://github.com/hitrain/jsonmapper/issues"
     },
     "require":{
       "php": ">=5.6"
