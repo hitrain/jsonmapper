@@ -22,6 +22,13 @@
  */
 class JsonMapper
 {
+
+    /**
+     * check JsonMapperInterface rules
+     * @var boolean
+     */
+    public $bUseMappingRule = false;
+
     /**
      * PSR-3 compatible logger object
      *
@@ -116,12 +123,13 @@ class JsonMapper
      *
      * @param object $json JSON object structure from json_decode()
      * @param object $object Object to map $json data into
-     *
      * @return object Mapped object is returned.
+     * @throws JsonMapper_Exception
      * @see    mapArray()
      */
     public function map($json, $object)
     {
+        $this->log('info', 'map started');
         if ($this->bEnforceMapType && !is_object($json)) {
             throw new InvalidArgumentException(
                 'JsonMapper::map() requires first argument to be an object'
@@ -140,21 +148,32 @@ class JsonMapper
         $strNs = $rc->getNamespaceName();
         $providedProperties = array();
 
-        if (!method_exists($object, 'mappingRule')) {
-            throw new InvalidArgumentException(
-                'method mappingRule not implemeted ' . $strClassName
-            );
-        }
-        $mapping = $object->mappingRule();
-        if (!$mapping) {
-            throw new InvalidArgumentException(
-                'Empty mapping in ' . $strClassName
-            );
+        $iterateItems = null;
+        if ($this->bUseMappingRule) {
+            $mapping = $object->mappingRule();
+            if (!$mapping) {
+                throw new InvalidArgumentException(
+                    'Empty mapping in ' . $strClassName
+                );
+            }
+            $iterateItems = $mapping;
+        } else {
+            $iterateItems = $json;
         }
 
-        foreach ($mapping as $jsonKey => $objKey) {
-            $jvalue = $this->getValue($json, $jsonKey);
-            $key = $objKey;
+        foreach ($iterateItems as $key => $value) {
+            if ($this->bUseMappingRule) {
+                // key is json mapping property
+                // value is object mapping property
+                $jvalue = $this->getValue($json, $key);
+                $key = $value;
+            } else {
+                // key is json property
+                // value is json value
+                $key = $this->getSafeName($key);
+                $jvalue = $value;
+            }
+
             $providedProperties[$key] = true;
 
             // Store the property inspection results so we don't have to do it
@@ -718,7 +737,6 @@ class JsonMapper
      * @param string $message Text to log
      * @param array $context Additional information
      *
-     * @return null
      */
     protected function log($level, $message, array $context = array())
     {
@@ -732,7 +750,6 @@ class JsonMapper
      *
      * @param LoggerInterface $logger PSR-3 compatible logger object
      *
-     * @return null
      */
     public function setLogger($logger)
     {

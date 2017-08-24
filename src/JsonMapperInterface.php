@@ -9,6 +9,7 @@
 interface JsonMapperInterface
 {
     /**
+     * define mapping rule with assoc array
      * @return array
      */
     public function mappingRule();
