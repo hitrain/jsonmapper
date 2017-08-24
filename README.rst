@@ -273,9 +273,9 @@ PHP code:
 
 .. code:: php
 
-$jm = new JsonMapper();
-$jm->bUseMappingRule = true;
-$jm->map($json, new Contact());
+   $jm = new JsonMapper();
+   $jm->bUseMappingRule = true;
+   $contact->map($json, new Contact());
 
 Getting nested property
 -----------------------
@@ -311,9 +311,9 @@ PHP code:
 
 .. code:: php
 
-$jm = new JsonMapper();
-$jm->bUseMappingRule = true;
-$jm->map($json, new Contact());
+   $jm = new JsonMapper();
+   $jm->bUseMappingRule = true;
+   $contact->map($json, new Contact());
 
 Simple type mapping
 -------------------
