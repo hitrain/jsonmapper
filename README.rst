@@ -239,6 +239,82 @@ See `phpdoc's type documentation`__ for more information.
 __ http://phpdoc.org/docs/latest/references/phpdoc/types.html
 
 
+Different property name
+-----------------------
+When need mapping different property name from json to local class
+
+Your local ``Contact`` class:
+
+.. code:: php
+
+    <?php
+    class Contact implements JsonMapperInterface
+    {
+        /**
+         * Full name
+         * @var string
+         */
+        public $name;
+        
+        /**
+         * define mapping rule with assoc array
+         * @return array
+         */
+        public function mappingRule()
+        {
+           return [
+               'jsonName' => 'name',
+               ];
+       }
+    }
+    ?>
+
+PHP code:
+
+.. code:: php
+
+$jm = new JsonMapper();
+$jm->bUseMappingRule = true;
+$jm->map($json, new Contact());
+
+Getting nested property
+-----------------------
+Getting nested property to root object property
+
+Your local ``Contact`` class:
+
+.. code:: php
+
+    <?php
+    class Contact implements JsonMapperInterface
+    {
+        /**
+         * Full name
+         * @var string
+         */
+        public $name;
+        
+        /**
+         * define mapping rule with assoc array
+         * @return array
+         */
+        public function mappingRule()
+        {
+           return [
+               'jsonObject.nestedJsonObject.jsonName' => 'name',
+               ];
+       }
+    }
+    ?>
+    
+PHP code:
+
+.. code:: php
+
+$jm = new JsonMapper();
+$jm->bUseMappingRule = true;
+$jm->map($json, new Contact());
+
 Simple type mapping
 -------------------
 When an object shall be created but the JSON contains a simple type
