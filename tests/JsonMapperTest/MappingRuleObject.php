@@ -28,6 +28,17 @@ class MappingRuleObject implements \JsonMapperInterface
     public $extractedNested;
 
     /**
+     * @var boolean
+     */
+    public $isToken;
+
+    public function __construct($params = null)
+    {
+        $this->isToken = $params['isToken'];
+    }
+
+
+    /**
      * define mapping rule with assoc array
      * @return array
      */

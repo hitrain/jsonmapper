@@ -22,13 +22,6 @@
  */
 class JsonMapper
 {
-
-    /**
-     * check JsonMapperInterface rules
-     * @var boolean
-     */
-    public $bUseMappingRule = false;
-
     /**
      * PSR-3 compatible logger object
      *
@@ -149,7 +142,7 @@ class JsonMapper
         $providedProperties = array();
 
         $iterateItems = null;
-        if ($this->bUseMappingRule) {
+        if (method_exists($object, 'mappingRule')) {
             $mapping = $object->mappingRule();
             if (!$mapping) {
                 throw new InvalidArgumentException(
@@ -162,7 +155,7 @@ class JsonMapper
         }
 
         foreach ($iterateItems as $key => $value) {
-            if ($this->bUseMappingRule) {
+            if (method_exists($object, 'mappingRule')) {
                 // key is json mapping property
                 // value is object mapping property
                 $jvalue = $this->getValue($json, $key);
@@ -383,7 +376,7 @@ class JsonMapper
      *
      * @return mixed Mapped $array is returned
      */
-    public function mapArray($json, $array, $class = null)
+    public function mapArray($json, $array, $class = null, $params = null)
     {
         foreach ($json as $key => $jvalue) {
             $key = $this->getSafeName($key);
@@ -411,9 +404,14 @@ class JsonMapper
                     }
                 }
             } else {
-                $array[$key] = $this->map(
-                    $jvalue, $this->createInstance($class)
-                );
+                if ($params) {
+                    $array[$key] = $this->map($jvalue, $this->createInstance($class, true, $params));
+                } else {
+                    $array[$key] = $this->map(
+                        $jvalue, $this->createInstance($class)
+                    );
+                }
+
             }
         }
         return $array;

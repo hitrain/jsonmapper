@@ -8,9 +8,6 @@
 
 class MappingRuleNestedObject implements \JsonMapperInterface
 {
-    /**
-     * @var string
-     */
     public $name;
 
     /**
