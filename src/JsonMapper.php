@@ -525,10 +525,12 @@ class JsonMapper
         foreach (explode(".", $path) as $property) {
             if (isset($temp->{$property})) {
                 $temp = $temp->{$property};
-            } else {
+            } else if ($this->bStrictNullTypes) {
                 throw new InvalidArgumentException(
                     'Property ' . $property . ' not found in JSON object'
                 );
+            } else {
+                return null;
             }
         }
         return $temp;
